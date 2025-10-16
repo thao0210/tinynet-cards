@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./Videos.module.scss";
+import styles from "./videos.module.scss";
 import VideoModal from "../../components/videoModal";
 
 const TinyNetVideos = () => {
