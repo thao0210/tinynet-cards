@@ -1,0 +1,100 @@
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* đảm bảo nằm trên mọi thứ */
+}
+
+.modal {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalVideo {
+  border-radius: 0.75rem;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+/* video ngang: chiếm tối đa 80% màn hình */
+.landscape {
+  width: 80vw;
+  height: auto;
+}
+
+/* video dọc: giữ nguyên tỉ lệ, vừa khít màn hình */
+.portrait {
+  height: 85vh;
+  width: auto;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  font-size: 1.8rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    // background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.navButtons {
+  position: absolute;
+  top: 50%;
+  right: 1.5rem;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.navBtn {
+  background: rgba(0, 0, 0, 0.4);
+  border: none;
+  color: #fff;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  svg {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
