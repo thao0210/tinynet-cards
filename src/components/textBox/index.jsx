@@ -46,7 +46,7 @@ const EditableText = ({
   // Khởi tạo text content
   useEffect(() => {
     setText(initialText);
-    // if (textRef.current) textRef.current.textContent = initialText;
+    if (textRef.current) textRef.current.textContent = initialText;
   }, [initialText]);
 
   // Hide toolbar khi click ra ngoài
@@ -131,7 +131,6 @@ const EditableText = ({
         .catch((err) => console.error("Copy failed", err));
     };
 
-    console.log("👉 initialText:", initialText);
   return (
     <div
       ref={wrapperRef}
@@ -252,9 +251,10 @@ const EditableText = ({
             cursor: readOnly ? "default" : "move",
         }}
         onInput={(e) => setText(e.currentTarget.textContent)}
-        >
-        {text}
-        </div>
+        onBlur={() => {
+            setText(textRef.current?.textContent || "");
+        }}
+        />
     </div>
   );
 };

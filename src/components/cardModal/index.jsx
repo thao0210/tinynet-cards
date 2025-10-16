@@ -54,7 +54,7 @@ const CardModal = ({ item, onClose, onNext, onPrev }) => {
           y="85%"
           fontSize={28}
           color="#fff"
-          onChange={(t) => console.log("New text:", t)}
+          onChange={() => {}}
           name={item.name}
         />
 
