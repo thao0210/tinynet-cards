@@ -1,0 +1,94 @@
+.textWrapper {
+  position: absolute;
+  user-select: none;
+  touch-action: none;
+}
+
+.editableDiv {
+  outline: none;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+  text-align: center;
+  min-width: 100px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(0,0,0,0.7);
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.6rem;
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  backdrop-filter: blur(5px);
+}
+
+.toolbar button {
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.toolbar button:hover,
+.toolbar .active {
+  color: #00b4ff;
+}
+
+.toolbar select,
+.toolbar input[type="number"],
+.toolbar input[type="color"] {
+  background: transparent;
+  border: none;
+  color: #ccc;
+}
+
+.popupWrapper {
+  position: relative;
+}
+
+.popupBox {
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(40, 40, 40, 0.95);
+  border-radius: 0.6rem;
+  padding: 0.5rem 0.8rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.15s ease-out;
+}
+
+.arrow {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid rgba(40, 40, 40, 0.95);
+}
+
+.popupBox select,
+.popupBox input {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  border-radius: 0.3rem;
+  padding: 0.2rem 0.4rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -8px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}

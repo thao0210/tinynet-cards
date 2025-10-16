@@ -1,34 +1,45 @@
 import React, { useEffect, useState } from "react";
 import styles from "./videos.module.scss";
-import VideoModal from "../../components/videoModal";
+import CardModal from "../../components/cardModal";
 
-const TinyNetVideos = () => {
+const TinyNetCards = () => {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   const baseUrl = import.meta.env.VITE_R2_BASE_URL;
   const videosUrl = import.meta.env.VITE_R2_VIDEOS_URL;
 
-  const videoImagesArray = Array.from(
-    { length: 40 },
-    (_, i) => `${baseUrl}/videos/v${i + 1}.webp`
-  );
-
+  // --- tạo danh sách video ---
   const videoArray = Array.from({ length: 40 }, (_, i) => ({
+    id: `v${i + 1}`,
+    type: "video",
+    thumbUrl: `${baseUrl}/videos/v${i + 1}.webp`,
     videoUrl: `${videosUrl}/v${i + 1}.mp4`,
-    thumbUrl: videoImagesArray[i],
     duration: null,
+    name: `v${i + 1}`,
   }));
 
-  const [videos, setVideos] = useState(videoArray);
+  // --- tạo danh sách ảnh ---
+  const imageArray = Array.from({ length: 64 }, (_, i) => ({
+    id: `img${i + 1}`,
+    type: "image",
+    thumbUrl: `${baseUrl}/card-bg/${i + 1}.webp`,
+    imageUrl: `${baseUrl}/card-bg/${i + 1}.webp`,
+    name: `${i + 1}`,
+  }));
 
+  // --- merge lại ---
+  const [cards, setCards] = useState([...videoArray, ...imageArray]);
+
+  // --- load metadata video ---
   useEffect(() => {
     const loadMetadata = async () => {
-      const updated = [...videos];
+      const updated = [...cards];
       await Promise.all(
-        updated.map((v, idx) => {
+        updated.map((item, idx) => {
+          if (item.type !== "video") return Promise.resolve();
           return new Promise((resolve) => {
             const video = document.createElement("video");
-            video.src = v.videoUrl;
+            video.src = item.videoUrl;
             video.addEventListener("loadedmetadata", () => {
               updated[idx].duration = video.duration.toFixed(1);
               resolve();
@@ -37,34 +48,35 @@ const TinyNetVideos = () => {
           });
         })
       );
-      setVideos(updated);
+      setCards(updated);
     };
 
     loadMetadata();
   }, []);
 
   const handlePrev = () => {
-    setSelectedIndex((i) => (i > 0 ? i - 1 : videos.length - 1));
+    setSelectedIndex((i) => (i > 0 ? i - 1 : cards.length - 1));
   };
 
   const handleNext = () => {
-    setSelectedIndex((i) => (i < videos.length - 1 ? i + 1 : 0));
+    setSelectedIndex((i) => (i < cards.length - 1 ? i + 1 : 0));
   };
+
+  const selectedCard = selectedIndex !== null ? cards[selectedIndex] : null;
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>
         <img src="/logo.svg" alt="logo" />
         <span>
-          <small>TinyNet</small>
-          Cards
+          <small>TinyNet</small> Cards
         </span>
       </h1>
 
       <div className={styles.grid}>
-        {videos.map((v, index) => (
+        {cards.map((item, index) => (
           <div
-            key={index}
+            key={item.id}
             className={`${styles.card} ${
               selectedIndex === index ? styles.active : ""
             }`}
@@ -72,24 +84,32 @@ const TinyNetVideos = () => {
           >
             <div className={styles.thumbWrap}>
               <img
-                src={v.thumbUrl}
-                alt={`thumb${index}`}
+                src={item.thumbUrl}
+                alt={item.id}
                 className={styles.thumb}
               />
-              <span className={styles.duration}>
-                {v.duration ? `${v.duration}s` : "..."}
-              </span>
+
+              {/* Duration nếu là video */}
+              {item.type === "video" && (
+                <span className={styles.duration}>
+                  {item.duration ? `${item.duration}s` : "..."}
+                </span>
+              )}
+
+              {/* Overlay + icon */}
               <div className={styles.overlay}>
-                <span className={styles.playIcon}>▶</span>
+                <span className={styles.playIcon}>
+                  {item.type === "video" ? "▶" : "＋"}
+                </span>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {selectedIndex !== null && (
-        <VideoModal
-          video={videos[selectedIndex]}
+      {selectedCard && (
+        <CardModal
+          item={selectedCard}
           onClose={() => setSelectedIndex(null)}
           onPrev={handlePrev}
           onNext={handleNext}
@@ -99,4 +119,4 @@ const TinyNetVideos = () => {
   );
 };
 
-export default TinyNetVideos;
+export default TinyNetCards;
